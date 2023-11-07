@@ -2,7 +2,8 @@ package com.greenblat.cloudfilestorage.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.greenblat.cloudfilestorage.validation.OnCreate;
+import com.greenblat.cloudfilestorage.validation.UniqueEmail;
+import com.greenblat.cloudfilestorage.validation.groups.OnCreate;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -20,6 +21,7 @@ public record AuthRequest(
 
         @NotBlank(groups = OnCreate.class)
         @Email(groups = OnCreate.class)
+        @UniqueEmail(groups = OnCreate.class)
         String email,
 
         @Pattern(
