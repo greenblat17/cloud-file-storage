@@ -1,6 +1,7 @@
 package com.greenblat.cloudfilestorage.service;
 
 import com.greenblat.cloudfilestorage.dto.AuthRequest;
+import com.greenblat.cloudfilestorage.exception.ResourceAlreadyExistsException;
 import com.greenblat.cloudfilestorage.model.User;
 import com.greenblat.cloudfilestorage.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,10 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public void saveUser(AuthRequest request) {
+        if (userRepository.findByUsername(request.username()).isPresent()) {
+            throw new ResourceAlreadyExistsException(String.format("user with username [%s] exists", request.username()));
+        }
+
         var user = new User(
                 null,
                 request.username(),
