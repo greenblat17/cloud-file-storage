@@ -8,19 +8,19 @@
 
 <form th:action="@{/registration}"  method="post" th:object="${user}">
     <label for="username">Username:
-        <input id="username" type="text" name="username" th:value="*{username}">
+        <input id="username" type="text" name="username" th:field="*{username}">
     </label><br>
 
     <label for="password">Password:
-        <input id="password" type="password" name="password" th:value="*{password}">
+        <input id="password" type="password" name="password" th:field="*{password}">
     </label><br>
 
     <label for="password">Email:
-        <input id="email" type="text" name="email" th:value="*{email}">
+        <input id="email" type="text" name="email" th:field="*{email}">
     </label><br>
 
-    <label for="password">Phone number:
-        <input id="phone" type="text" name="phone" th:value="*{phoneNumber}">
+    <label for="phone">Phone number:
+        <input id="phone" type="text" name="phone" th:field="*{phone_number}">
     </label><br>
 
     <button type="submit">Register</button>

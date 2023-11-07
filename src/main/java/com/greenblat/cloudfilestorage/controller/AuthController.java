@@ -2,7 +2,7 @@ package com.greenblat.cloudfilestorage.controller;
 
 import com.greenblat.cloudfilestorage.dto.AuthRequest;
 import com.greenblat.cloudfilestorage.service.AuthService;
-import com.greenblat.cloudfilestorage.validation.OnCreate;
+import com.greenblat.cloudfilestorage.validation.groups.OnCreate;
 import jakarta.validation.groups.Default;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -31,7 +31,7 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public String registrationPerform(@Validated({Default.class, OnCreate.class}) @ModelAttribute("user")  AuthRequest request,
+    public String registrationPerform(@Validated({Default.class, OnCreate.class}) AuthRequest request,
                                       BindingResult bindingResult,
                                       RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
