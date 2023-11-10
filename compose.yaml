@@ -12,14 +12,12 @@ services:
   minio:
     image: minio/minio:latest
     container_name: minio
-    command: server ~/minio --console-address :9090
     ports:
       - '9000:9000'
       - '9090:9090'
-    networks:
-      - minionetwork
     volumes:
       - 'minio-data:/data'
+    command: server ~/minio --console-address :9090
     environment:
       - MINIO_ROOT_USER=${MINIO_ACCESS_KEY}
       - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY}
@@ -29,7 +27,3 @@ volumes:
     driver: local
   minio-data:
     driver: local
-
-networks:
-  minionetwork:
-    driver: bridge
