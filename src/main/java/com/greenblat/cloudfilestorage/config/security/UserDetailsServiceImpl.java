@@ -1,4 +1,4 @@
-package com.greenblat.cloudfilestorage.security;
+package com.greenblat.cloudfilestorage.config.security;
 
 import com.greenblat.cloudfilestorage.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

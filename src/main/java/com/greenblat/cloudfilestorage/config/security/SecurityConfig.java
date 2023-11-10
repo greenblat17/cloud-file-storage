@@ -1,4 +1,4 @@
-package com.greenblat.cloudfilestorage.config;
+package com.greenblat.cloudfilestorage.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +18,9 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers("login", "registration").permitAll();
-                    authorize.anyRequest().authenticated();
+                    authorize.anyRequest().permitAll();
+//                    authorize.requestMatchers("/login", "/registration").permitAll();
+//                    authorize.anyRequest().authenticated();
                 })
                 .logout(configurer -> configurer
                         .logoutUrl("/logout")
