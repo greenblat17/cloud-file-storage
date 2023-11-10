@@ -6,9 +6,30 @@ services:
       - 'POSTGRES_PASSWORD=root'
       - 'POSTGRES_USER=root'
     volumes:
-      - 'data:/var/lib/postgresql/data'
+      - 'db-data:/var/lib/postgresql/data'
     ports:
       - '5432:5432'
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    command: server ~/minio --console-address :9090
+    ports:
+      - '9000:9000'
+      - '9090:9090'
+    networks:
+      - minionetwork
+    volumes:
+      - 'minio-data:/data'
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY}
 
 volumes:
-  data:
+  db-data:
+    driver: local
+  minio-data:
+    driver: local
+
+networks:
+  minionetwork:
+    driver: bridge
