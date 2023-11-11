@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+</head>
+<body>
+
+<h1>Main Page</h1>
+
+<h3>Create Folder</h3>
+<form th:action="@{/folders/create}" method="post" th:object="${folderRequest}">
+
+    <label for="parent">Parent Folder:
+        <input id="parent" type="text" name="parent" th:field="*{parentFolderPath}">
+    </label><br>
+
+    <label for="new">New Folder:
+        <input id="new" type="text" name="new" th:field="*{newFolder}">
+    </label><br>
+
+    <button type="submit">Create</button>
+</form>
+
+<br>
+
+<h3>Upload File</h3>
+<form th:action="@{/files/upload}"  enctype="multipart/form-data" method="post" th:object="${fileRequest}">
+
+    <label for="file">File:
+        <input id="file" type="file" name="phone" th:field="*{file}">
+    </label><br>
+
+    <button type="submit">Upload</button>
+</form>
+
+<!--<div th:if="${errors}">-->
+<!--    <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>-->
+<!--</div>-->
+
+</body>
+</html>
