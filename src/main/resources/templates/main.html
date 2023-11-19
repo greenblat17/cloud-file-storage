@@ -34,9 +34,25 @@
     <button type="submit">Upload</button>
 </form>
 
-<!--<div th:if="${errors}">-->
-<!--    <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>-->
-<!--</div>-->
+<br>
+
+<h3>Files</h3>
+<a th:text="'Корень: /'" th:href="@{/main}"></a> <br>
+<span>Current Path</span>
+<span th:each="breadcrumb : ${currentUrl}">
+    <a th:text="${breadcrumb}" th:href="@{'/main?path=' + ${links.get(breadcrumb)}}"></a>
+    <span>/</span>
+</span>
+<div th:each="key : ${paths.keySet()}">
+    <a th:text="${key.name}" th:href="@{'/main?path=' + ${paths.get(key)}}"></a>
+    <span th:text="${key.isDir} ? 'DIR' : ''"></span>
+
+    <form th:if="${!key.isDir}" th:method="POST"  th:action="@{'/files/delete?path=' + ${paths.get(key)}}">
+        <button type="submit">Delete</button>
+    </form>
+
+    <br>
+</div>
 
 </body>
 </html>
