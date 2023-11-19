@@ -1,50 +1,42 @@
 package com.greenblat.cloudfilestorage.service;
 
-import com.greenblat.cloudfilestorage.config.minio.MinioProperties;
 import com.greenblat.cloudfilestorage.dto.FileRequest;
 import com.greenblat.cloudfilestorage.exception.FileUploadException;
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import com.greenblat.cloudfilestorage.repository.MinioRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class FileService {
 
-    private final MinioClient minioClient;
-    private final MinioProperties minioProperties;
+    private final MinioRepository minioRepository;
 
-    public String upload(FileRequest request) {
+
+    public void upload(FileRequest request) {
         createBucket();
+
         var file = request.getFile();
+        checkEmptyFile(file);
+
+        var fileName = generateFileName(file);
+        var inputStream = extractInputStream(file);
+
+        minioRepository.saveFile(fileName, inputStream);
+    }
+
+    private void checkEmptyFile(MultipartFile file) {
         if (file.isEmpty() || file.getOriginalFilename() == null) {
             throw new FileUploadException("File must have the name");
         }
-        var fileName = generateFileName(file);
-        saveFile(file, fileName);
-        return fileName;
     }
 
-    @SneakyThrows
-    private void saveFile(MultipartFile file, String fileName) {
-        var inputStream = extractInputStream(file);
-        minioClient.putObject(
-                PutObjectArgs.builder()
-                        .stream(inputStream, inputStream.available(), -1)
-                        .bucket(minioProperties.getBucket())
-                        .object(fileName)
-                        .build()
-        );
-    }
 
     private InputStream extractInputStream(MultipartFile file) {
         try {
@@ -54,19 +46,10 @@ public class FileService {
         }
     }
 
-    @SneakyThrows
     private void createBucket() {
-        var found = minioClient.bucketExists(
-                BucketExistsArgs.builder()
-                        .bucket(minioProperties.getBucket())
-                        .build()
-        );
+        var found = minioRepository.existsBucket();
         if (!found) {
-            minioClient.makeBucket(
-                    MakeBucketArgs.builder()
-                            .bucket(minioProperties.getBucket())
-                            .build()
-            );
+            minioRepository.createBucket();
         }
     }
 
@@ -75,7 +58,7 @@ public class FileService {
     }
 
     private String getExtension(MultipartFile file) {
-        return getExtensionFromFileName(file.getOriginalFilename());
+        return getExtensionFromFileName(Objects.requireNonNull(file.getOriginalFilename()));
     }
 
     public String getExtensionFromFileName(String filename) {
