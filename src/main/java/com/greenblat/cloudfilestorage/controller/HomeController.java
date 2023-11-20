@@ -30,7 +30,7 @@ public class HomeController {
         model.addAttribute("paths", pathResponses);
         model.addAttribute("links", folderService.getUrlForPath(path));
         model.addAttribute("currentUrl", folderService.getCurrentUrl(path));
-        model.addAttribute("path", path);
+        model.addAttribute("path", path.isEmpty() ?  "/" : path);
         model.addAttribute("encodePath", URLEncoder.encode(path + "/", StandardCharsets.UTF_8));
 
         return "main";

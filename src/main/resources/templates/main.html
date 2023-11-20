@@ -67,7 +67,7 @@
     <a th:text="${key.name}" th:href="@{'/main?path=' + ${paths.get(key)}}"></a>
     <span th:text="${key.isDir} ? 'DIR' : ''"></span>
 
-    <form th:if="${!key.isDir}" th:method="POST"  th:action="@{'/files/delete?path=' + ${paths.get(key)}}">
+    <form th:if="${!key.isDir}" th:method="POST"  th:action="@{'/files/delete?path=' + ${path} + '&filename=' + ${key.name}}">
         <button type="submit">Delete</button>
     </form>
 

@@ -19,6 +19,10 @@ public class FileService {
 
     private final MinioRepository minioRepository;
 
+    public void deleteFile(String filename, String path) {
+        var fullFilename = generateFullFilename(path, filename);
+        minioRepository.deleteFile(fullFilename);
+    }
 
     public void upload(FileRequest request, String path) {
         createBucket();
@@ -41,7 +45,7 @@ public class FileService {
         }
 
         for (MultipartFile file : files) {
-            var fullFilename = generateFullFileName(filesRequest.parentPath(), generateFileName(file));
+            var fullFilename = generateFullFilename(filesRequest.parentPath(), generateFileName(file));
             var inputStream = extractInputStream(file);
             minioRepository.saveFile(fullFilename, inputStream);
         }
@@ -69,9 +73,12 @@ public class FileService {
         }
     }
 
+    private String generateFullFilename(String path, String filename) {
+        return isRootPath(path) ? filename : path + "/" + filename;
+    }
 
-    private String generateFullFileName(String path, String fileName) {
-        return path + "/" + fileName;
+    private boolean isRootPath(String path) {
+        return path.equals("/");
     }
 
     private String generateFileName(MultipartFile file) {

@@ -22,4 +22,11 @@ public class FileController {
         return "redirect:/main";
     }
 
+    @PostMapping("/delete")
+    public String deleteFile(@RequestParam String path,
+                             @RequestParam String filename) {
+        fileService.deleteFile(filename, path);
+        return "redirect:/main";
+    }
+
 }

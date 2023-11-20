@@ -10,4 +10,6 @@ public interface MinioRepository {
 
     boolean existsBucket();
 
+    void deleteFile(String filename);
+
 }

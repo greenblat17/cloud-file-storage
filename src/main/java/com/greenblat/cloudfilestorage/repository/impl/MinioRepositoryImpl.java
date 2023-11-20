@@ -2,12 +2,8 @@ package com.greenblat.cloudfilestorage.repository.impl;
 
 import com.greenblat.cloudfilestorage.config.minio.MinioProperties;
 import com.greenblat.cloudfilestorage.exception.MinioOperationException;
-import com.greenblat.cloudfilestorage.exception.FileUploadException;
 import com.greenblat.cloudfilestorage.repository.MinioRepository;
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import io.minio.*;
 import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -67,6 +63,22 @@ public class MinioRepositoryImpl implements MinioRepository {
                  InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
                  XmlParserException e) {
             throw new MinioOperationException("Exists bucket failed: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteFile(String filename) {
+        try {
+            minioClient.removeObject(
+                    RemoveObjectArgs.builder()
+                            .bucket(minioProperties.getBucket())
+                            .object(filename)
+                            .build()
+            );
+        } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
+                 InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
+                 XmlParserException e) {
+            throw new MinioOperationException("Delete file failed: " + e.getMessage());
         }
     }
 }
