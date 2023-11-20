@@ -11,13 +11,11 @@
 <h3>Create Folder</h3>
 <form th:action="@{/folders/create}" method="post" th:object="${folderRequest}">
 
-    <label for="parent">Parent Folder:
-        <input id="parent" type="text" name="parent" th:field="*{parentFolderPath}">
+    <label for="new">Name Folder:
+        <input id="new" type="text" name="new" th:field="*{folderName}">
     </label><br>
 
-    <label for="new">New Folder:
-        <input id="new" type="text" name="new" th:field="*{newFolder}">
-    </label><br>
+    <input type="hidden" name="parentPath" th:value="${path}">
 
     <button type="submit">Create</button>
 </form>
@@ -25,7 +23,7 @@
 <br>
 
 <h3>Upload File</h3>
-<form th:action="@{/files/upload}"  enctype="multipart/form-data" method="post" th:object="${fileRequest}">
+<form th:action="@{'/files/upload?path=' + ${path}}"  enctype="multipart/form-data" method="post" th:object="${fileRequest}">
 
     <label for="file">File:
         <input id="file" type="file" name="phone" th:field="*{file}">

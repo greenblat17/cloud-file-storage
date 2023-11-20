@@ -19,13 +19,13 @@ public class FileService {
     private final MinioRepository minioRepository;
 
 
-    public void upload(FileRequest request) {
+    public void upload(FileRequest request, String path) {
         createBucket();
 
         var file = request.getFile();
         checkEmptyFile(file);
 
-        var fileName = generateFileName(file);
+        var fileName = path + "/" + generateFileName(file);
         var inputStream = extractInputStream(file);
 
         minioRepository.saveFile(fileName, inputStream);
