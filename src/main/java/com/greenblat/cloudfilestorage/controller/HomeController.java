@@ -1,5 +1,6 @@
 package com.greenblat.cloudfilestorage.controller;
 
+import com.greenblat.cloudfilestorage.dto.FileRenameRequest;
 import com.greenblat.cloudfilestorage.dto.FileRequest;
 import com.greenblat.cloudfilestorage.dto.FolderCreateRequest;
 import com.greenblat.cloudfilestorage.dto.FolderUploadRequest;
@@ -24,6 +25,7 @@ public class HomeController {
     public String mainPage(@ModelAttribute FileRequest fileRequest,
                            @ModelAttribute FolderCreateRequest folderCreateRequest,
                            @ModelAttribute FolderUploadRequest folderUploadRequest,
+                           @ModelAttribute FileRenameRequest fileRenameRequest,
                            @RequestParam(name = "path", defaultValue = "", required = false) String path,
                            Model model) {
         var pathResponses = folderService.getAllFoldersAndFiles(path);

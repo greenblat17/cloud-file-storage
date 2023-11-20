@@ -1,5 +1,6 @@
 package com.greenblat.cloudfilestorage.service;
 
+import com.greenblat.cloudfilestorage.dto.FileRenameRequest;
 import com.greenblat.cloudfilestorage.dto.FileRequest;
 import com.greenblat.cloudfilestorage.dto.FolderUploadRequest;
 import com.greenblat.cloudfilestorage.exception.FileUploadException;
@@ -18,6 +19,18 @@ import java.util.UUID;
 public class FileService {
 
     private final MinioRepository minioRepository;
+
+    public void renameFile(FileRenameRequest fileRenameRequest) {
+        var currentPath = fileRenameRequest.path();
+        var extension = getExtensionFromFileName(fileRenameRequest.currentName());
+        var updatedName = fileRenameRequest.updatedName() + "." + extension;
+
+        var fullFilename = generateFullFilename(currentPath, fileRenameRequest.currentName());
+        var updatedFullFilename = generateFullFilename(currentPath, updatedName);
+
+        minioRepository.copyFile(fullFilename, updatedFullFilename);
+        minioRepository.deleteFile(fullFilename);
+    }
 
     public void deleteFile(String filename, String path) {
         var fullFilename = generateFullFilename(path, filename);

@@ -12,4 +12,6 @@ public interface MinioRepository {
 
     void deleteFile(String filename);
 
+    void copyFile(String filename, String destination);
+
 }

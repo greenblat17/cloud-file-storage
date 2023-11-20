@@ -81,4 +81,25 @@ public class MinioRepositoryImpl implements MinioRepository {
             throw new MinioOperationException("Delete file failed: " + e.getMessage());
         }
     }
+
+    @Override
+    public void copyFile(String filename, String destination) {
+        var copySource = CopySource.builder()
+                .bucket(minioProperties.getBucket())
+                .object(filename)
+                .build();
+        try {
+            minioClient.copyObject(
+                    CopyObjectArgs.builder()
+                            .bucket(minioProperties.getBucket())
+                            .object(destination)
+                            .source(copySource)
+                            .build()
+            );
+        } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
+                 InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
+                 XmlParserException e) {
+            throw new MinioOperationException("Copy file failed: " + e.getMessage());
+        }
+    }
 }

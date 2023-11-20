@@ -1,5 +1,6 @@
 package com.greenblat.cloudfilestorage.controller;
 
+import com.greenblat.cloudfilestorage.dto.FileRenameRequest;
 import com.greenblat.cloudfilestorage.dto.FileRequest;
 import com.greenblat.cloudfilestorage.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,12 @@ public class FileController {
     public String deleteFile(@RequestParam String path,
                              @RequestParam String filename) {
         fileService.deleteFile(filename, path);
+        return "redirect:/main";
+    }
+
+    @PostMapping("/rename")
+    public String renameFile(FileRenameRequest fileRenameRequest) {
+        fileService.renameFile(fileRenameRequest);
         return "redirect:/main";
     }
 
