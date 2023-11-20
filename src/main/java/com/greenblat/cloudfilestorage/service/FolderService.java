@@ -1,7 +1,7 @@
 package com.greenblat.cloudfilestorage.service;
 
 import com.greenblat.cloudfilestorage.config.minio.MinioProperties;
-import com.greenblat.cloudfilestorage.dto.FolderRequest;
+import com.greenblat.cloudfilestorage.dto.FolderCreateRequest;
 import com.greenblat.cloudfilestorage.dto.PathResponse;
 import io.minio.ListObjectsArgs;
 import io.minio.MinioClient;
@@ -65,7 +65,7 @@ public class FolderService {
     }
 
     @SneakyThrows
-    public void createFolder(FolderRequest request) {
+    public void createFolder(FolderCreateRequest request) {
         minioClient.putObject(
                 PutObjectArgs.builder()
                         .bucket(minioProperties.getBucket())

@@ -1,6 +1,7 @@
 package com.greenblat.cloudfilestorage.service;
 
 import com.greenblat.cloudfilestorage.dto.FileRequest;
+import com.greenblat.cloudfilestorage.dto.FolderUploadRequest;
 import com.greenblat.cloudfilestorage.exception.FileUploadException;
 import com.greenblat.cloudfilestorage.repository.MinioRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,21 @@ public class FileService {
         minioRepository.saveFile(fileName, inputStream);
     }
 
+    public void uploadFiles(FolderUploadRequest filesRequest) {
+        createBucket();
+
+        var files = filesRequest.files();
+        if (files == null || files.isEmpty()) {
+            throw new FileUploadException("Files are empty");
+        }
+
+        for (MultipartFile file : files) {
+            var fullFilename = generateFullFileName(filesRequest.parentPath(), generateFileName(file));
+            var inputStream = extractInputStream(file);
+            minioRepository.saveFile(fullFilename, inputStream);
+        }
+    }
+
     private void checkEmptyFile(MultipartFile file) {
         if (file.isEmpty() || file.getOriginalFilename() == null) {
             throw new FileUploadException("File must have the name");
@@ -51,6 +67,11 @@ public class FileService {
         if (!found) {
             minioRepository.createBucket();
         }
+    }
+
+
+    private String generateFullFileName(String path, String fileName) {
+        return path + "/" + fileName;
     }
 
     private String generateFileName(MultipartFile file) {

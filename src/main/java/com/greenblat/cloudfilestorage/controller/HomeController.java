@@ -1,7 +1,8 @@
 package com.greenblat.cloudfilestorage.controller;
 
 import com.greenblat.cloudfilestorage.dto.FileRequest;
-import com.greenblat.cloudfilestorage.dto.FolderRequest;
+import com.greenblat.cloudfilestorage.dto.FolderCreateRequest;
+import com.greenblat.cloudfilestorage.dto.FolderUploadRequest;
 import com.greenblat.cloudfilestorage.service.FolderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,8 @@ public class HomeController {
 
     @GetMapping("/main")
     public String mainPage(@ModelAttribute FileRequest fileRequest,
-                           @ModelAttribute FolderRequest folderRequest,
+                           @ModelAttribute FolderCreateRequest folderCreateRequest,
+                           @ModelAttribute FolderUploadRequest folderUploadRequest,
                            @RequestParam(name = "path", defaultValue = "", required = false) String path,
                            Model model) {
         var pathResponses = folderService.getAllFoldersAndFiles(path);

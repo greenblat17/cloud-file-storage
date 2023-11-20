@@ -8,8 +8,30 @@
 
 <h1>Main Page</h1>
 
+<!--<h3>Upload Folder</h3>-->
+<!--<form th:action="@{/folders/upload}" method="post"  enctype="multipart/form-data" th:object="${folderUploadRequest}"></form>-->
+
+<!--§-->
+
+<!--    <input type="hidden" name="parentPath" th:value="${path}">-->
+
+<!--    <button type="submit">Upload</button>-->
+<!--<br>-->
+
+<h3>Upload Folder</h3>
+<form th:action="@{/folders/upload}"  enctype="multipart/form-data" method="post" th:object="${folderUploadRequest}">
+
+    <label for="file1">File:
+        <input id="file1" type="file" name="files" th:field="*{files}" required webkitdirectory class="form-control ">
+    </label><br>
+
+    <input type="hidden" name="parentPath" th:value="${path}">
+
+    <button type="submit">Upload</button>
+</form>
+
 <h3>Create Folder</h3>
-<form th:action="@{/folders/create}" method="post" th:object="${folderRequest}">
+<form th:action="@{/folders/create}" method="post" th:object="${folderCreateRequest}">
 
     <label for="new">Name Folder:
         <input id="new" type="text" name="new" th:field="*{folderName}">
