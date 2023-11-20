@@ -1,7 +1,7 @@
 package com.greenblat.cloudfilestorage.repository.impl;
 
 import com.greenblat.cloudfilestorage.config.minio.MinioProperties;
-import com.greenblat.cloudfilestorage.exception.BucketException;
+import com.greenblat.cloudfilestorage.exception.MinioOperationException;
 import com.greenblat.cloudfilestorage.exception.FileUploadException;
 import com.greenblat.cloudfilestorage.repository.MinioRepository;
 import io.minio.BucketExistsArgs;
@@ -36,7 +36,7 @@ public class MinioRepositoryImpl implements MinioRepository {
             );
             inputStream.close();
         } catch (Exception e) {
-            throw new FileUploadException("Image upload failed" + e.getMessage());
+            throw new MinioOperationException("Image upload failed" + e.getMessage());
         }
     }
 
@@ -51,7 +51,7 @@ public class MinioRepositoryImpl implements MinioRepository {
         } catch (ServerException | ErrorResponseException | InsufficientDataException | InternalException |
                  InvalidKeyException | InvalidResponseException | IOException | NoSuchAlgorithmException |
                  XmlParserException e) {
-            throw new BucketException("Create bucket failed: " + e.getMessage());
+            throw new MinioOperationException("Create bucket failed: " + e.getMessage());
         }
     }
 
@@ -66,7 +66,7 @@ public class MinioRepositoryImpl implements MinioRepository {
         } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
                  InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
                  XmlParserException e) {
-            throw new BucketException("Exists bucket failed: " + e.getMessage());
+            throw new MinioOperationException("Exists bucket failed: " + e.getMessage());
         }
     }
 }
