@@ -71,6 +71,18 @@
         <button type="submit">Delete</button>
     </form>
 
+    <form th:if="${!key.isDir}" th:method="POST"  th:action="@{/files/rename}" th:object="${fileRenameRequest}">
+
+        <input type="hidden" name="path" th:value="${path}">
+        <input type="hidden" name="currentName" th:value="${key.name}">
+
+        <label for="new_name">
+            <input id="new_name" type="text" th:field="*{updatedName}">
+        </label>
+
+        <button type="submit">Rename</button>
+    </form>
+
     <br>
 </div>
 
