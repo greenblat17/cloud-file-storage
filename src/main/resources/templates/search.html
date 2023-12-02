@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+</head>
+<body>
+
+<h3>Search Files</h3>
+
+<form th:action="@{/search}">
+    <label for="name"> File or Directory name
+        <input id="name" type="text" name="query">
+    </label><br>
+    <button type="submit">Search</button>
+
+</form>
+
+<a th:text="'Корень: /'" th:href="@{/main}"></a> <br><br>
+
+<div th:each="object : ${foundObjects.keySet()}">
+    <span th:text="${object.name}"></span>
+    <span th:text="${object.isDir} ? 'DIR' : ''"></span>
+    <a th:href="@{'/main?path=' + ${foundObjects.get(object)}}">In Dir</a>
+</div>
+
+</body>
+</html>

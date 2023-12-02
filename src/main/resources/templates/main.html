@@ -8,16 +8,6 @@
 
 <h1>Main Page</h1>
 
-<!--<h3>Upload Folder</h3>-->
-<!--<form th:action="@{/folders/upload}" method="post"  enctype="multipart/form-data" th:object="${folderUploadRequest}"></form>-->
-
-<!--§-->
-
-<!--    <input type="hidden" name="parentPath" th:value="${path}">-->
-
-<!--    <button type="submit">Upload</button>-->
-<!--<br>-->
-
 <h3>Upload Folder</h3>
 <form th:action="@{/folders/upload}"  enctype="multipart/form-data" method="post" th:object="${folderUploadRequest}">
 
@@ -85,6 +75,8 @@
 
     <br>
 </div>
+
+<a href="/search">Search File</a>
 
 </body>
 </html>
