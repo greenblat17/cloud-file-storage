@@ -3,17 +3,13 @@ package com.greenblat.cloudfilestorage.service;
 import com.greenblat.cloudfilestorage.config.minio.MinioProperties;
 import com.greenblat.cloudfilestorage.dto.FolderCreateRequest;
 import com.greenblat.cloudfilestorage.dto.PathResponse;
-import io.minio.ListObjectsArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import io.minio.Result;
+import io.minio.*;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -39,7 +35,7 @@ public class FolderService {
                         .build()
         );
 
-        Map<PathResponse, String> paths = new HashMap();
+        Map<PathResponse, String> paths = new HashMap<>();
         for (Result<Item> bucket : buckets) {
             var objectPath = bucket.get().objectName().split("/");
 
@@ -95,7 +91,14 @@ public class FolderService {
     }
 
     private String getFolderPath(String parentFolder, String newFolder) {
+        if (parentFolder.isEmpty()) {
+            return getFolderPathWithEmptyParent(newFolder);
+        }
         return parentFolder + "/" + newFolder + "/";
+    }
+
+    private String getFolderPathWithEmptyParent(String newFolder) {
+        return newFolder + "/";
     }
 
     private String encodeUrl(String[] breadcrumbs, String currentUrl) {
@@ -105,10 +108,6 @@ public class FolderService {
         }
         sb.append(currentUrl);
         return URLEncoder.encode(sb.toString(), StandardCharsets.UTF_8);
-    }
-
-    private String decodeUrl(String url) {
-        return URLDecoder.decode(url, StandardCharsets.UTF_8);
     }
 
 }
