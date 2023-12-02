@@ -1,6 +1,9 @@
 package com.greenblat.cloudfilestorage.repository;
 
+import com.greenblat.cloudfilestorage.dto.PathResponse;
+
 import java.io.InputStream;
+import java.util.List;
 
 public interface MinioRepository {
 
@@ -14,4 +17,5 @@ public interface MinioRepository {
 
     void copyFile(String filename, String destination);
 
+    List<PathResponse> findAllFilesAndFolders();
 }

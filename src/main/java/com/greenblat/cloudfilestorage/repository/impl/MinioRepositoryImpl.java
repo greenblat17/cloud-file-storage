@@ -1,6 +1,7 @@
 package com.greenblat.cloudfilestorage.repository.impl;
 
 import com.greenblat.cloudfilestorage.config.minio.MinioProperties;
+import com.greenblat.cloudfilestorage.dto.PathResponse;
 import com.greenblat.cloudfilestorage.exception.MinioOperationException;
 import com.greenblat.cloudfilestorage.repository.MinioRepository;
 import io.minio.*;
@@ -12,6 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -102,4 +105,27 @@ public class MinioRepositoryImpl implements MinioRepository {
             throw new MinioOperationException("Copy file failed: " + e.getMessage());
         }
     }
+
+    @Override
+    public List<PathResponse> findAllFilesAndFolders() {
+        var listObjects = minioClient.listObjects(
+                ListObjectsArgs.builder()
+                        .bucket(minioProperties.getBucket())
+                        .recursive(true)
+                        .build()
+        );
+        List<PathResponse> files = new ArrayList<>();
+        listObjects.forEach(itemResult -> {
+            try {
+                var pathResponse = new PathResponse(itemResult.get().objectName(), itemResult.get().isDir());
+                files.add(pathResponse);
+            } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
+                     InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
+                     XmlParserException e) {
+                throw new MinioOperationException("Get all items failed: " + e.getMessage());
+            }
+        });
+        return files;
+    }
+
 }
