@@ -21,9 +21,20 @@ services:
     environment:
       - MINIO_ROOT_USER=${MINIO_ACCESS_KEY}
       - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY}
+  redis:
+    image: redis:7.2-rc-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - cache:/data
+    command: redis-server --save 20 1 --loglevel warning --requirepass Zmt3b2tnb3JqZ293ZWY
 
 volumes:
   db-data:
     driver: local
   minio-data:
+    driver: local
+  cache:
     driver: local
