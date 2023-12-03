@@ -8,8 +8,9 @@ The inspiration for the project is Google Drive.
 ## Tech Stack
 
 - Java 17
-- Spring Framework (Boot, Security, Data JPA)
+- Spring Framework (Boot, Security, Data JPA, Sessions)
 - MinIO S3
+- Redis
 - Docker
 
 
