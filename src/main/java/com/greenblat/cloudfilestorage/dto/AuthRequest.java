@@ -9,6 +9,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import java.io.Serializable;
+
 public record AuthRequest(
 
         @NotBlank
@@ -30,5 +32,5 @@ public record AuthRequest(
         )
         @NotBlank(groups = OnCreate.class)
         String phoneNumber
-) {
+) implements Serializable {
 }
