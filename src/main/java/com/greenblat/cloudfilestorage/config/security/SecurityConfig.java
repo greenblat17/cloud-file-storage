@@ -18,14 +18,12 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> {
-                    authorize.anyRequest().permitAll();
-//                    authorize.requestMatchers("/login", "/registration").permitAll();
-//                    authorize.anyRequest().authenticated();
+                    authorize.requestMatchers("/login", "/registration", "/registration-a").permitAll();
+                    authorize.anyRequest().authenticated();
                 })
                 .logout(configurer -> configurer
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login")
-                        .deleteCookies("JSESSIONID"))
+                        .logoutSuccessUrl("/login"))
                 .formLogin(configurer -> configurer
                         .loginPage("/login")
                         .defaultSuccessUrl("/registration"));
